@@ -6,6 +6,7 @@ help=no
 SRS_HDS=NO
 SRS_SRT=YES
 SRS_RTC=YES
+SRS_SCTP=YES
 SRS_H265=YES
 SRS_GB28181=NO
 SRS_CXX11=YES
@@ -177,6 +178,7 @@ Features:
   --utest=on|off            Whether build the utest. Default: $(value2switch $SRS_UTEST)
   --srt=on|off              Whether build the SRT. Default: $(value2switch $SRS_SRT)
   --rtc=on|off              Whether build the WebRTC. Default: $(value2switch $SRS_RTC)
+  --sctp=on|off             Whether build the SCTP for DataChannel. Default: $(value2switch $SRS_SCTP)
   --gb28181=on|off          Whether build the GB28181. Default: $(value2switch $SRS_GB28181)
   --cxx11=on|off            Whether enable the C++11. Default: $(value2switch $SRS_CXX11)
   --cxx14=on|off            Whether enable the C++14. Default: $(value2switch $SRS_CXX14)
@@ -336,6 +338,7 @@ function parse_user_option() {
         --apm)                          SRS_APM=$(switch2value $value) ;;
         --srt)                          SRS_SRT=$(switch2value $value) ;;
         --rtc)                          SRS_RTC=$(switch2value $value) ;;
+        --sctp)                         SRS_SCTP=$(switch2value $value) ;;
         --simulator)                    SRS_SIMULATOR=$(switch2value $value) ;;
         --generate-objs)                SRS_GENERATE_OBJS=$(switch2value $value) ;;
         --single-thread)                SRS_SINGLE_THREAD=$(switch2value $value) ;;
@@ -643,6 +646,7 @@ function regenerate_options() {
     SRS_AUTO_CONFIGURE="${SRS_AUTO_CONFIGURE} --srt=$(value2switch $SRS_SRT)"
     SRS_AUTO_CONFIGURE="${SRS_AUTO_CONFIGURE} --sys-srt=$(value2switch $SRS_USE_SYS_SRT)"
     SRS_AUTO_CONFIGURE="${SRS_AUTO_CONFIGURE} --rtc=$(value2switch $SRS_RTC)"
+    SRS_AUTO_CONFIGURE="${SRS_AUTO_CONFIGURE} --sctp=$(value2switch $SRS_SCTP)"
     SRS_AUTO_CONFIGURE="${SRS_AUTO_CONFIGURE} --h265=$(value2switch $SRS_H265)"
     SRS_AUTO_CONFIGURE="${SRS_AUTO_CONFIGURE} --gb28181=$(value2switch $SRS_GB28181)"
     SRS_AUTO_CONFIGURE="${SRS_AUTO_CONFIGURE} --simulator=$(value2switch $SRS_SIMULATOR)"
