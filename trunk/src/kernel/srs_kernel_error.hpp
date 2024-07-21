@@ -378,7 +378,9 @@
     XX(ERROR_RTC_TCP_STUN                  , 5034, "RtcTcpSession", "RTC TCP packet is invalid for session not found") \
     XX(ERROR_RTC_TCP_UNIQUE                , 5035, "RtcUnique", "RTC only support one UDP or TCP network") \
     XX(ERROR_RTC_INVALID_SESSION           , 5036, "RtcInvalidSession", "Invalid request for no RTC session matched") \
-    XX(ERROR_RTC_INVALID_ICE               , 5037, "RtcInvalidIce", "Invalid ICE ufrag or pwd")
+    XX(ERROR_RTC_INVALID_ICE               , 5037, "RtcInvalidIce", "Invalid ICE ufrag or pwd") \
+    XX(ERROR_RTC_SCTP                      , 5038, "RtcSCTP", "RTC SCTP ERROR") \
+    XX(ERROR_RTC_DATACHANNEL               , 5039, "RtcInvalidIce", "RTC DATACHANNEL ERROR")
 
 /**************************************************/
 /* SRT protocol error. */
