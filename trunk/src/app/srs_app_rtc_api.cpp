@@ -404,6 +404,14 @@ srs_error_t SrsGoApiRtcDataChannel::do_serve_http(ISrsHttpResponseWriter* w, ISr
     if ((prop = req->ensure_property_string("clientip")) != NULL) {
         clientip = prop->to_str();
     }
+    if (clientip.empty()) {
+        clientip = dynamic_cast<SrsHttpMessage*>(r)->connection()->remote_ip();
+        // Overwrite by ip from proxy.
+        string oip = srs_get_original_ip(r);
+        if (!oip.empty()) {
+            clientip = oip;
+        }
+    }
 
     string api;
     if ((prop = req->ensure_property_string("api")) != NULL) {
@@ -460,9 +468,9 @@ srs_error_t SrsGoApiRtcDataChannel::do_serve_http(ISrsHttpResponseWriter* w, ISr
     local_sdp.session_config_.dtls_role = _srs_config->get_rtc_dtls_role(ruc.req_->vhost);
     local_sdp.session_config_.dtls_version = _srs_config->get_rtc_dtls_version(ruc.req_->vhost);
 
-    if ((err = exchange_sdp(ruc.req_, ruc.remote_sdp_, local_sdp)) != srs_success) {
-        return srs_error_wrap(err, "remote sdp have error or unsupport attributes");
-    }
+    // if ((err = exchange_sdp(ruc.req_, ruc.remote_sdp_, local_sdp)) != srs_success) {
+    //     return srs_error_wrap(err, "remote sdp have error or unsupport attributes");
+    // }
 
     // Whether enabled.
     bool server_enabled = _srs_config->get_rtc_server_enabled();

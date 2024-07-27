@@ -109,6 +109,7 @@ static int on_recv_sctp_data(struct socket* sock, union sctp_sockstore addr,
 {
     srs_error_t err = srs_success;
 
+    srs_trace("SCTP: on_recv_sctp_data=%d", len);
 	SrsSctp* sctp = reinterpret_cast<SrsSctp*>(ulp_inffo);
     if (flags & MSG_NOTIFICATION) {
         err = sctp->on_sctp_event(rcv, data, len);
@@ -272,6 +273,7 @@ SrsSctp::SrsSctp(SrsDtls* dtls)
             srs_warn("usrrsctp bind failed, ret=%d", ret);
         }
     }
+    srs_trace("SCTP: usrsctp_bind success.");
 }
 
 SrsSctp::~SrsSctp()
@@ -314,6 +316,8 @@ srs_error_t SrsSctp::connect_to_class()
 
 void SrsSctp::feed(const char* buf, const int nb_buf)
 {
+
+    srs_trace("SCTP: feed len:%d.", nb_buf);
     usrsctp_conninput(this, buf, nb_buf, 0);
 }
 

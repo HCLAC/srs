@@ -407,6 +407,10 @@ srs_error_t SrsMediaDesc::encode(std::ostringstream& os)
             os << " " << msid_tracker_;
         }
 
+        if (is_application()) {
+            os << " webrtc-datachannel";
+        }
+
         os << kCRLF;
     }
 
