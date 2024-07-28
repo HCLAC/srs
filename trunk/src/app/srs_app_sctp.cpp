@@ -316,7 +316,6 @@ srs_error_t SrsSctp::connect_to_class()
 
 void SrsSctp::feed(const char* buf, const int nb_buf)
 {
-
     srs_trace("SCTP: feed len:%d.", nb_buf);
     usrsctp_conninput(this, buf, nb_buf, 0);
 }
@@ -520,7 +519,7 @@ srs_error_t SrsSctp::send(const uint16_t sid, const char* buf, const int len)
     memset(&spa, 0, sizeof(spa));
     spa.sendv_flags             = SCTP_SEND_SNDINFO_VALID;
     spa.sendv_sndinfo.snd_sid   = sid;
-    spa.sendv_sndinfo.snd_ppid  = htonl(SrsDataChannelPPIDString);
+    spa.sendv_sndinfo.snd_ppid  = htonl(SrsDataChannelPPIDBinary);
     spa.sendv_sndinfo.snd_flags = SCTP_EOR;
 
     if (data_channel.channel_type_ & 0x80) {
@@ -550,6 +549,7 @@ srs_error_t SrsSctp::send(const uint16_t sid, const char* buf, const int len)
         return srs_error_new(ERROR_RTC_SCTP, "sctp notify header");
     }
 
+    srs_trace("SCTP: send data len:%d.", len);
     return err;
 }
 
@@ -557,6 +557,7 @@ srs_error_t SrsSctp::broadcast(const char* buf, const int len)
 {
     srs_error_t err = srs_success;
 
+    srs_trace("SCTP: broadcast data len:%d. data_channels_size:%d", len, data_channels_.size());
     map<uint16_t, SrsDataChannel>::iterator iter = data_channels_.begin();
     for ( ; iter != data_channels_.end(); ++iter) {
         if ((err = send(iter->first, buf, len)) != srs_success) {

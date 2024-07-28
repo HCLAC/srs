@@ -220,6 +220,9 @@ srs_error_t SrsSecurityTransport::unprotect_rtcp(void* packet, int* nb_plaintext
     return srtp_->unprotect_rtcp(packet, nb_plaintext);
 }
 srs_error_t SrsSecurityTransport::send_video_by_sctp(const char* buf, const int len) {
+    if (sctp_ == NULL) {
+        return srs_success;
+    }
     return sctp_->broadcast(buf, len);
 }
 
@@ -247,6 +250,11 @@ srs_error_t SrsSemiSecurityTransport::unprotect_rtp(void* packet, int* nb_plaint
 }
 
 srs_error_t SrsSemiSecurityTransport::unprotect_rtcp(void* packet, int* nb_plaintext)
+{
+    return srs_success;
+}
+
+srs_error_t SrsSemiSecurityTransport::send_video_by_sctp(const char* buf, const int len)
 {
     return srs_success;
 }
@@ -312,6 +320,11 @@ srs_error_t SrsPlaintextTransport::unprotect_rtp(void* packet, int* nb_plaintext
 }
 
 srs_error_t SrsPlaintextTransport::unprotect_rtcp(void* packet, int* nb_plaintext)
+{
+    return srs_success;
+}
+
+srs_error_t SrsPlaintextTransport::send_video_by_sctp(const char* buf, const int len)
 {
     return srs_success;
 }
@@ -2510,6 +2523,15 @@ srs_error_t SrsRtcConnection::do_send_packet(SrsRtpPacket* pkt)
         iov->iov_len = cache_buffer_->pos();
     }
 
+
+    if (!pkt->is_audio()) {
+        if ((err = networks_->available()->send_video_by_sctp((const char *)iov->iov_base, iov->iov_len)) != srs_success) {
+            srs_warn("SCTP: Write %d bytes err %s", iov->iov_len, srs_error_desc(err).c_str());
+            srs_freep(err);
+            return err;
+        }
+    }
+
     // Cipher RTP to SRTP packet.
     if (true) {
         int nn_encrypt = (int)iov->iov_len;
@@ -2533,16 +2555,9 @@ srs_error_t SrsRtcConnection::do_send_packet(SrsRtpPacket* pkt)
         srs_freep(err);
         return err;
     }
-    if (!pkt->is_audio()) {
-        if ((err = networks_->available()->send_video_by_sctp((const char *)iov->iov_base, iov->iov_len)) != srs_success) {
-            srs_warn("SCTP: Write %d bytes err %s", iov->iov_len, srs_error_desc(err).c_str());
-            srs_freep(err);
-            return err;
-        }
-    }
 
     // Detail log, should disable it in release version.
-    srs_info("RTC: SEND PT=%u, SSRC=%#x, SEQ=%u, Time=%u, %u/%u bytes", pkt->header.get_payload_type(), pkt->header.get_ssrc(),
+    srs_trace("RTC: SEND PT=%u, SSRC=%#x, SEQ=%u, Time=%u, %u/%u bytes", pkt->header.get_payload_type(), pkt->header.get_ssrc(),
         pkt->header.get_sequence(), pkt->header.get_timestamp(), pkt->nb_bytes(), iov->iov_len);
 
     return err;

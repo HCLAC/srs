@@ -114,6 +114,8 @@ public:
 public:
     virtual srs_error_t protect_rtp(void* packet, int* nb_cipher);
     virtual srs_error_t protect_rtcp(void* packet, int* nb_cipher);
+    // send video data by sctp
+    virtual srs_error_t send_video_by_sctp(const char* buf, const int len);
     virtual bool is_establelished();
 // Interface ISrsStreamWriter.
 public:
@@ -156,7 +158,8 @@ public:
     srs_error_t on_dtls_handshake_done();
     srs_error_t protect_rtp(void* packet, int* nb_cipher);
     srs_error_t protect_rtcp(void* packet, int* nb_cipher);
-    srs_error_t send_video_by_sctp(const char* buf, const int len);
+    // send video data by sctp
+    virtual srs_error_t send_video_by_sctp(const char* buf, const int len);
 
 // When got data from socket.
 public:
@@ -206,6 +209,8 @@ public:
     virtual srs_error_t protect_rtp(void* packet, int* nb_cipher);
     // Protect RTCP packet by SRTP context.
     virtual srs_error_t protect_rtcp(void* packet, int* nb_cipher);
+    // send video data by sctp
+    virtual srs_error_t send_video_by_sctp(const char* buf, const int len);
 
     // When got STUN ping message. The peer address may change, we can identify that by STUN messages.
     srs_error_t on_stun(SrsStunPacket* r, char* data, int nb_data);

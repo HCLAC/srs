@@ -147,6 +147,9 @@ public:
     srs_error_t protect_rtcp(void* packet, int* nb_cipher);
     srs_error_t unprotect_rtp(void* packet, int* nb_plaintext);
     srs_error_t unprotect_rtcp(void* packet, int* nb_plaintext);
+
+    // send video data by sctp
+    virtual srs_error_t send_video_by_sctp(const char* buf, const int len);
 };
 
 // Plaintext transport, without DTLS or SRTP.
@@ -165,6 +168,8 @@ public:
     virtual srs_error_t on_dtls_handshake_done();
     virtual srs_error_t on_dtls_application_data(const char* data, const int len);
     virtual srs_error_t write_dtls_data(void* data, int size);
+    // send video data by sctp
+    virtual srs_error_t send_video_by_sctp(const char* buf, const int len);
 public:
     srs_error_t protect_rtp(void* packet, int* nb_cipher);
     srs_error_t protect_rtcp(void* packet, int* nb_cipher);

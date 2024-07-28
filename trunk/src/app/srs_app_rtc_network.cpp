@@ -142,6 +142,11 @@ srs_error_t SrsRtcDummyNetwork::protect_rtcp(void* packet, int* nb_cipher)
     return srs_success;
 }
 
+srs_error_t SrsRtcDummyNetwork::send_video_by_sctp(const char* buf, const int len)
+{
+    return srs_success;
+}
+
 srs_error_t SrsRtcDummyNetwork::write(void* buf, size_t size, ssize_t* nwrite)
 {
     return srs_success;
@@ -492,6 +497,11 @@ srs_error_t SrsRtcTcpNetwork::protect_rtp(void* packet, int* nb_cipher)
 srs_error_t SrsRtcTcpNetwork::protect_rtcp(void* packet, int* nb_cipher)
 {
     return transport_->protect_rtcp(packet, nb_cipher);
+}
+
+srs_error_t SrsRtcTcpNetwork::send_video_by_sctp(const char* buf, const int len)
+{
+    return srs_success;
 }
 
 srs_error_t SrsRtcTcpNetwork::on_stun(SrsStunPacket* r, char* data, int nb_data)
