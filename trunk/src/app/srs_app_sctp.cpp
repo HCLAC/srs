@@ -553,10 +553,16 @@ srs_error_t SrsSctp::send(const uint16_t sid, const char* buf, const int len)
     return err;
 }
 
-void SrsSctp::broadcast(const char* buf, const int len)
+srs_error_t SrsSctp::broadcast(const char* buf, const int len)
 {
+    srs_error_t err = srs_success;
+
     map<uint16_t, SrsDataChannel>::iterator iter = data_channels_.begin();
     for ( ; iter != data_channels_.end(); ++iter) {
-        send(iter->first, buf, len);
+        if ((err = send(iter->first, buf, len)) != srs_success) {
+            srs_warn("SCTP: send error, %s", srs_error_desc(err).c_str());
+            srs_error_reset(err);
+        }
     }
+    return err;
 }

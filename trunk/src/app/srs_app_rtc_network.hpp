@@ -94,6 +94,8 @@ public:
     virtual srs_error_t protect_rtp(void* packet, int* nb_cipher) = 0;
     // Protect RTCP packet by SRTP context.
     virtual srs_error_t protect_rtcp(void* packet, int* nb_cipher) = 0;
+    // send video data by sctp
+    virtual srs_error_t send_video_by_sctp(const char* buf, const int len) = 0;
 public:
     virtual bool is_establelished() = 0;
 };
@@ -154,6 +156,8 @@ public:
     srs_error_t on_dtls_handshake_done();
     srs_error_t protect_rtp(void* packet, int* nb_cipher);
     srs_error_t protect_rtcp(void* packet, int* nb_cipher);
+    srs_error_t send_video_by_sctp(const char* buf, const int len);
+
 // When got data from socket.
 public:
     srs_error_t on_rtcp(char* data, int nb_data);

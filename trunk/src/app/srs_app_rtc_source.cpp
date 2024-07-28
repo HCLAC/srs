@@ -2952,7 +2952,7 @@ srs_error_t SrsRtcVideoSendTrack::on_rtp(SrsRtpPacket* pkt)
         return srs_error_wrap(err, "raw send");
     }
 
-    srs_info("RTC: Send video ssrc=%d, seqno=%d, keyframe=%d, ts=%u", pkt->header.get_ssrc(),
+    srs_trace("RTC: Send video ssrc=%d, seqno=%d, keyframe=%d, ts=%u", pkt->header.get_ssrc(),
         pkt->header.get_sequence(), pkt->is_keyframe(), pkt->header.get_timestamp());
 
     return err;

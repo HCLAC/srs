@@ -81,7 +81,7 @@ public:
 public:
     srs_error_t connect_to_class();
 	srs_error_t send(const uint16_t sid, const char* buf, const int len);
-    void broadcast(const char* buf, const int len);
+    srs_error_t broadcast(const char* buf, const int len);
     srs_error_t on_sctp_event(const struct sctp_rcvinfo& rcv, void* data, size_t len);
     srs_error_t on_sctp_data(const struct sctp_rcvinfo& rcv, void* data, size_t len);
     void feed(const char* buf, const int nb_buf);

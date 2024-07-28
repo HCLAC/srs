@@ -219,6 +219,9 @@ srs_error_t SrsSecurityTransport::unprotect_rtcp(void* packet, int* nb_plaintext
 {
     return srtp_->unprotect_rtcp(packet, nb_plaintext);
 }
+srs_error_t SrsSecurityTransport::send_video_by_sctp(const char* buf, const int len) {
+    return sctp_->broadcast(buf, len);
+}
 
 SrsSemiSecurityTransport::SrsSemiSecurityTransport(ISrsRtcNetwork* s) : SrsSecurityTransport(s)
 {
@@ -2329,6 +2332,7 @@ srs_error_t SrsRtcConnection::send_rtcp(char *data, int nb_data)
         return srs_error_wrap(err, "send");
     }
 
+    //
     return err;
 }
 
@@ -2528,6 +2532,13 @@ srs_error_t SrsRtcConnection::do_send_packet(SrsRtpPacket* pkt)
         srs_warn("RTC: Write %d bytes err %s", iov->iov_len, srs_error_desc(err).c_str());
         srs_freep(err);
         return err;
+    }
+    if (!pkt->is_audio()) {
+        if ((err = networks_->available()->send_video_by_sctp((const char *)iov->iov_base, iov->iov_len)) != srs_success) {
+            srs_warn("SCTP: Write %d bytes err %s", iov->iov_len, srs_error_desc(err).c_str());
+            srs_freep(err);
+            return err;
+        }
     }
 
     // Detail log, should disable it in release version.

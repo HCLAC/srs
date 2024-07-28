@@ -92,6 +92,8 @@ public:
     // The nb_plaintext should be initialized to the size of cipher.
     virtual srs_error_t unprotect_rtp(void* packet, int* nb_plaintext) = 0;
     virtual srs_error_t unprotect_rtcp(void* packet, int* nb_plaintext) = 0;
+    // send video data by sctp
+    virtual srs_error_t send_video_by_sctp(const char* buf, const int len) = 0;
 };
 
 // The security transport, use DTLS/SRTP to protect the data.
@@ -123,6 +125,8 @@ public:
     // The nb_plaintext should be initialized to the size of cipher.
     srs_error_t unprotect_rtp(void* packet, int* nb_plaintext);
     srs_error_t unprotect_rtcp(void* packet, int* nb_plaintext);
+    // send video data by sctp
+    srs_error_t send_video_by_sctp(const char* buf, const int len);
 // implement ISrsDtlsCallback
 public:
     virtual srs_error_t on_dtls_handshake_done();

@@ -233,6 +233,11 @@ srs_error_t SrsRtcUdpNetwork::protect_rtcp(void* packet, int* nb_cipher)
     return transport_->protect_rtcp(packet, nb_cipher);
 }
 
+srs_error_t SrsRtcUdpNetwork::send_video_by_sctp(const char* buf, const int len)
+{
+    return transport_->send_video_by_sctp(buf, len);
+}
+
 srs_error_t SrsRtcUdpNetwork::on_rtcp(char* data, int nb_data)
 {
     srs_error_t err = srs_success;
