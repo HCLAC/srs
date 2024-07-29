@@ -255,6 +255,8 @@ enum SrsFrameType
     SrsFrameTypeAudio = 8,
     // 9 = video
     SrsFrameTypeVideo = 9,
+    // 99 = video
+    SrsFrameTypeVideoDataChannel = 99,
     // 18 = script data
     SrsFrameTypeScript = 18,
 };

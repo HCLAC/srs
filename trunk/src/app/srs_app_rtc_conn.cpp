@@ -2524,8 +2524,10 @@ srs_error_t SrsRtcConnection::do_send_packet(SrsRtpPacket* pkt)
     }
 
 
-    if (!pkt->is_audio()) {
-        if ((err = networks_->available()->send_video_by_sctp((const char *)iov->iov_base, iov->iov_len)) != srs_success) {
+    if (pkt->frame_type == SrsFrameTypeVideoDataChannel) {
+
+        srs_trace("SRS_H265 do_send_packet, size=[%d], data=[%s]", ((SrsRtpRawPayload *)pkt->payload())->nn_payload, srs_string_dumps_hex(((SrsRtpRawPayload*)pkt->payload())->payload, 16, 32).c_str());
+        if ((err = networks_->available()->send_video_by_sctp(((SrsRtpRawPayload *)pkt->payload())->payload, ((SrsRtpRawPayload*)pkt->payload())->nn_payload)) != srs_success) {
             srs_warn("SCTP: Write %d bytes err %s", iov->iov_len, srs_error_desc(err).c_str());
             srs_freep(err);
             return err;
