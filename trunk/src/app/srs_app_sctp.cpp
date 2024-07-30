@@ -502,6 +502,7 @@ srs_error_t SrsSctp::on_data_channel_msg(const struct sctp_rcvinfo& rcv, SrsBuff
 srs_error_t SrsSctp::send(const uint16_t sid, const char* buf, const int len)
 {
     srs_error_t err = srs_success;
+    srs_info("SRS_H265 SrsSctp::send, size=[%d], data=[%s]", len, srs_string_dumps_hex(buf, 16, 32).c_str());
 
     map<uint16_t, SrsDataChannel>::iterator iter = data_channels_.find(sid);
     if (iter == data_channels_.end()) {
