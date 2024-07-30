@@ -2558,7 +2558,7 @@ srs_error_t SrsRtcConnection::do_send_packet(SrsRtpPacket* pkt)
     }
 
     // Detail log, should disable it in release version.
-    srs_trace("RTC: SEND PT=%u, SSRC=%#x, SEQ=%u, Time=%u, %u/%u bytes", pkt->header.get_payload_type(), pkt->header.get_ssrc(),
+    srs_info("RTC: SEND PT=%u, SSRC=%#x, SEQ=%u, Time=%u, %u/%u bytes", pkt->header.get_payload_type(), pkt->header.get_ssrc(),
         pkt->header.get_sequence(), pkt->header.get_timestamp(), pkt->nb_bytes(), iov->iov_len);
 
     return err;

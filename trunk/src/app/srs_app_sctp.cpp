@@ -316,7 +316,7 @@ srs_error_t SrsSctp::connect_to_class()
 
 void SrsSctp::feed(const char* buf, const int nb_buf)
 {
-    srs_trace("SCTP: feed len:%d.", nb_buf);
+    srs_info("SCTP: feed len:%d.", nb_buf);
     usrsctp_conninput(this, buf, nb_buf, 0);
 }
 

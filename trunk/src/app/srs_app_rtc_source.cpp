@@ -1041,8 +1041,8 @@ srs_error_t SrsRtcRtpBuilder::on_video(SrsSharedPtrMessage* msg)
 
         raw->payload = msg->payload;
         raw->nn_payload = msg->size;
-        srs_trace("SRS_H265 on_video, size=[%d], data=[%s]", raw->nn_payload, srs_string_dumps_hex(raw->payload, 16, 32).c_str());
-        pkt->wrap(msg);
+        srs_info("SRS_H265 on_video, size=[%d], data=[%s]", raw->nn_payload, srs_string_dumps_hex(raw->payload, 16, 32).c_str());
+        // pkt->wrap(msg);
 
         if ((err = bridge_->on_rtp(pkt)) != srs_success) {
             return srs_error_wrap(err, "consume sps/pps");
@@ -2972,7 +2972,7 @@ srs_error_t SrsRtcVideoSendTrack::on_rtp(SrsRtpPacket* pkt)
         return srs_error_wrap(err, "raw send");
     }
 
-    srs_trace("RTC: Send video ssrc=%u, seqno=%d, keyframe=%d, ts=%u", pkt->header.get_ssrc(),
+    srs_info("RTC: Send video ssrc=%u, seqno=%d, keyframe=%d, ts=%u", pkt->header.get_ssrc(),
         pkt->header.get_sequence(), pkt->is_keyframe(), pkt->header.get_timestamp());
 
     return err;
