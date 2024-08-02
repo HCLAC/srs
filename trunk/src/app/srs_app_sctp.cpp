@@ -235,6 +235,13 @@ SrsSctp::SrsSctp(SrsDtls* dtls)
             srs_warn("usrrsctp set SCTP_NODELAY failed, ret=%d", ret);
         }
 
+        uint32_t bufferSize = 512000*5;
+        ret = usrsctp_setsockopt(sctp_socket, SOL_SOCKET, SO_SNDBUF, &bufferSize, sizeof(bufferSize));
+        // TODO: FIXME: Handle error.
+        if (ret < 0) {
+            srs_warn("usrrsctp set SO_SNDBUF failed, ret=%d", ret);
+        }
+
         struct sctp_event event;
         memset(&event, 0, sizeof(event));
         event.se_on = 1;
